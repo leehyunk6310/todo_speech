@@ -1,5 +1,9 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:todo_speech/calendar.dart';
+import 'package:todo_speech/weekly.dart';
+import 'done.dart';
+import 'home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,8 +18,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
-        useMaterial3: true,
+        useMaterial3: true, colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent).copyWith(background: Colors.blueAccent)
       ),
       home: const MyHomePage(title: 'Todo'),
     );
@@ -32,33 +35,53 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int current_index = 0;
+  int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.blueAccent,
-        index: 0,
-        items: const <Widget>[
-          Icon(
-            Icons.home,
-          ),
-          Icon(
-            Icons.calendar_month,
-          ),
-          Icon(
-            Icons.star,
-          ),
-          Icon(
-            Icons.download_done,
-          ),
-        ],
-        onTap: (index) {
-          //Handle button tap
-        },
-      ),
-      body: Container(color: Colors.blueAccent),
+      bottomNavigationBar: buildCurvedNavigationBar(),
+      body: _widgetOptions[_selectedIndex],
+    );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  CurvedNavigationBar buildCurvedNavigationBar() {
+    return CurvedNavigationBar(
+      backgroundColor: Colors.blueAccent,
+      index: _selectedIndex,
+      height: 50,
+      animationDuration: const Duration(milliseconds: 150),
+      items: const <Widget>[
+        Icon(
+          Icons.home,
+        ),
+        Icon(
+          Icons.calendar_month,
+        ),
+        Icon(
+          Icons.star,
+        ),
+        Icon(
+          Icons.download_done,
+        ),
+      ],
+      onTap: (index) {
+        //Handle button tap
+        _onItemTapped(index);
+      },
     );
   }
 }
+
+final List<Widget> _widgetOptions = <Widget>[
+  Home(),
+  Calendar(),
+  Weekly(),
+  Done()
+];
