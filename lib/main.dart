@@ -1,3 +1,4 @@
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:todo_speech/calendar.dart';
@@ -17,9 +18,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        useMaterial3: true, colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent).copyWith(background: Colors.blueAccent)
-      ),
+          useMaterial3: true,
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent)),
       home: const MyHomePage(title: 'Todo'),
     );
   }
@@ -40,8 +42,39 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: buildCurvedNavigationBar(),
+      bottomNavigationBar: buildConvexAppBar(),
       body: _widgetOptions[_selectedIndex],
+    );
+  }
+
+  ConvexAppBar buildConvexAppBar() {
+    return ConvexAppBar(
+      items: const [
+        TabItem(
+          icon: Icon(
+            Icons.home,
+          ),
+        ),
+        TabItem(
+          icon: Icon(
+            Icons.calendar_month,
+          ),
+        ),
+        TabItem(
+          icon: Icon(
+            Icons.star,
+          ),
+        ),
+        TabItem(
+          icon: Icon(
+            Icons.download_done,
+          ),
+        ),
+      ],
+      onTap: (index) {
+        //Handle button tap
+        _onItemTapped(index);
+      },
     );
   }
 
