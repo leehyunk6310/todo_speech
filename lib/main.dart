@@ -1,10 +1,12 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:todo_speech/calendar.dart';
 import 'package:todo_speech/weekly.dart';
-import 'package:todo_speech/write.dart';
 import 'done.dart';
+import 'dto/dto.dart';
 import 'home.dart';
 
 void main() {
@@ -39,6 +41,25 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
+  late List<Todo> todoList;
+  
+  @override
+  void initState() {
+    super.initState();
+
+    openDB();
+  }
+
+  openDB() async {
+    await Hive.initFlutter();
+    Hive.registerAdapter(TodoAdapter());
+
+    var todoBox = await Hive.openBox<Todo>('todo');
+
+    todoList = todoBox.values.toList();
+    
+    print(todoList);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _onItemTapped(int index) {
     setState(() {
-        _selectedIndex = index;
+      _selectedIndex = index;
     });
   }
 
