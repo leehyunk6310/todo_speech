@@ -41,32 +41,44 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
-  late List<Todo> todoList;
-  
-  @override
-  void initState() {
-    super.initState();
-
-    openDB();
-  }
-
-  openDB() async {
-    await Hive.initFlutter();
-    Hive.registerAdapter(TodoAdapter());
-
-    var todoBox = await Hive.openBox<Todo>('todo');
-
-    todoList = todoBox.values.toList();
-    
-    print(todoList);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: buildConvexAppBar(),
-      body: _widgetOptions[_selectedIndex],
-    );
+        bottomNavigationBar: buildConvexAppBar(),
+        body: IndexedStack(
+          index: _selectedIndex,
+          children: [
+            Navigator(
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  builder: (context) => Home(),
+                );
+              },
+            ),
+            Navigator(
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  builder: (context) => Calendar(),
+                );
+              },
+            ),
+            Navigator(
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  builder: (context) => Weekly(),
+                );
+              },
+            ),
+            Navigator(
+              onGenerateRoute: (settings) {
+                return MaterialPageRoute(
+                  builder: (context) => Done(),
+                );
+              },
+            ),
+          ],
+        ));
   }
 
   ConvexAppBar buildConvexAppBar() {
@@ -132,11 +144,5 @@ class _MyHomePageState extends State<MyHomePage> {
       },
     );
   }
-}
 
-final List<Widget> _widgetOptions = <Widget>[
-  Home(),
-  Calendar(),
-  Weekly(),
-  Done()
-];
+}
