@@ -98,7 +98,7 @@ class _WriteState extends State<Write> {
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0,0,20,0),
-                child: TextButton(onPressed: () {}, child: Text("취소", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.blueAccent),)),
+                child: TextButton(onPressed: () {Navigator.of(context).pop();}, child: Text("취소", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.blueAccent),)),
               ),
             ],
           )
